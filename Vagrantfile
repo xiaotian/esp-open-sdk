@@ -5,11 +5,24 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+# Plug in the USB > serial device and run
+# $> VBoxManage list usbhost
+# to get the vendor id and product id
+
+$vendor_id  = '0x1a86'
+$product_id = '0x7523'
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "esp-dev"
   config.vm.provider "virtualbox" do |v|
     v.memory = 1024 # default 512M is not enough to build the SDK, linker will die
+  end
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ['modifyvm', :id, '--usb', 'on']
+    vb.customize ['usbfilter', 'add', '0', '--target', :id, '--name', 'USB_to_TTL_converter', '--vendorid', $vendor_id, '--productid', $product_id]
   end
 
   config.vm.provision "shell", path: "bootstrap.sh"
