@@ -1,4 +1,11 @@
-# A ubuntu 14LTS based esp-open-sdk toolchain
+# A ubuntu/trusty64 based esp-open-sdk environment
+
+**This VM setup following things**
+
+* USB-serial port
+* setup esp-open-sdk
+* picocom
+* host/guest directory share
 
 **USB Serial port setup**
 
